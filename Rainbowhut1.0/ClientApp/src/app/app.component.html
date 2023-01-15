@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Rainbowhut Studio</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    </head>
+<body>
+  <div *ngIf="loading" class="sequence">
+  
+    <div class="seq-preloader">
+      
+      <svg width="39" height="16" viewBox="0 0 39 16" xmlns="http://www.w3.org/2000/svg" class="seq-preload-indicator"><g fill="#F96D38"><path class="seq-preload-circle seq-preload-circle-1" d="M3.999 12.012c2.209 0 3.999-1.791 3.999-3.999s-1.79-3.999-3.999-3.999-3.999 1.791-3.999 3.999 1.79 3.999 3.999 3.999z"/><path class="seq-preload-circle seq-preload-circle-2" d="M15.996 13.468c3.018 0 5.465-2.447 5.465-5.466 0-3.018-2.447-5.465-5.465-5.465-3.019 0-5.466 2.447-5.466 5.465 0 3.019 2.447 5.466 5.466 5.466z"/><path class="seq-preload-circle seq-preload-circle-3" d="M31.322 15.334c4.049 0 7.332-3.282 7.332-7.332 0-4.049-3.282-7.332-7.332-7.332s-7.332 3.283-7.332 7.332c0 4.05 3.283 7.332 7.332 7.332z"/></g></svg>
+    </div>
+    
+  </div>
+  
+
+  <nav>
+    <div class="logo">
+        <img src="assets/images/Logo.png" alt="">
+    </div>
+    <div class="mini-logo">
+        <img src="assets/images/mini-logo.png" alt="">
+    </div>
+    <ul>
+      <li><a href="#1"><mat-icon >home</mat-icon> <em>Home</em></a></li>
+      <li><a href="#2"><mat-icon >camera</mat-icon> <em>Service</em></a></li>
+      <li><a href="#3"><mat-icon >image</mat-icon> <em>Gallery</em></a></li>
+      <li><a href="#4"><mat-icon>person</mat-icon> <em>About</em></a></li>
+      <li><a href="#5"><mat-icon >email</mat-icon> <em>Contact</em></a></li>
+      
+    </ul>
+  
+  </nav>
+ 
+
+
+  <a href="https://wa.me/message/XNLKHZ57J4RRN1" class="float" target="_blank">
+    <svg class='fontawesomesvg' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+
+    </a>
+<div class="slides">
+
+   <div class="fslide" id="1">
+    <div class="row top-owl-row">
+      <div class="col-12">
+        <owl-carousel-o [options]="customOptions" >
+          <ng-template  carouselSlide *ngFor="let slideitem of Iimageslideshow" >
+            <div class="slide1" >
+              <img src="{{slideitem.data}}" class="top-owl">
+            </div>
+          </ng-template>
+        </owl-carousel-o>
+      </div>
+    </div>
+    <div class="fcontent first-fcontent">
+      <div class="container-fluid"> 
+           <div class="col-md-2">
+              <div class="author-image"><img src="{{Iimageprofile.data}}" alt=""></div>
+          </div>
+          <div class="col-md-9 intro">
+              <h2>Suprith Manoraj</h2>
+              <p>Im a lifestyle, portrait and documentary photographer from Puttur,Karnataka.I have {{Experinced_year}}+ years of experience in photography. </p> 
+              <!-- <div class="main-btn"><a href="#2">Read More</a></div>  -->
+              <a href="https://www.facebook.com/RainbowHutStudio" target="_blank"><img class="social-icon" src="assets/images/icons8-facebook-24.png"></a> 
+              <a href="https://instagram.com/rainbowhut_official?igshid=YmMyMTA2M2Y=" target="_blank"> <img class="social-icon" src="assets/images/icons8-instagram-24.png"></a> 
+              <a href="https://www.youtube.com/@RainbowHutOfficial" target="_blank"> <img class="social-icon" src="assets/images/icons8-youtube-24.png" ></a> 
+          </div>
+       
+          
+      </div>
+    </div>
+    <div class="row bottom-owl-row">
+      <div class="col-12">
+        <owl-carousel-o [options]="customOptions1">
+          <ng-template  carouselSlide *ngFor="let slideitem of Iimageslideshow" >
+            <div class="slide1" >
+              <img src="{{slideitem.data}}" class="top-owl">
+            </div>
+          </ng-template>
+        </owl-carousel-o>
+      </div>
+    </div>
+  </div>
+  <div class="slide" id="2">
+    <div class="content third-content">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="first-section">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="left-content">
+                                        <h2>Photography</h2>
+                                        <p>Our in-house photography services team made up of professional photographers can add value to your website with high-resolution team photos, corporate event photography and product photography.</p>
+                                        <!-- <div class="main-btn"><a href="#4">Continue Reading</a></div> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="right-image">
+                                        <img src="assets/images/photography.jpg" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="left-image">
+                                        <img src="assets/images/videography.jpg" >
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="right-content">
+                                        <h2>Videography</h2>
+                                        <p>We are providing good videography services to our customers.We have good professional videographers team and latest technology devices.our videography services including Wedding,Drone,Youtube videography,Stage videography and all others videography.</p>
+                                        <!-- <div class="main-btn"><a href="#4">Continue Reading</a></div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row">
+                  <div class="first-section">
+                      <div class="container-fluid">
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="left-content">
+                                      <h2>Editing</h2>
+                                      <p>We have latest techology Systems and software services for editing. We can give the best editing services to the customer what they needs.Our editing services including photo editing,video editing,photo album,photo frame etc.</p>
+                                      <!-- <div class="main-btn"><a href="#4">Continue Reading</a></div> -->
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="right-image">
+                                      <img src="assets/images/editing.jpg" >
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="second-section">
+                      <div class="container-fluid">
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="left-image">
+                                      <img src="assets/images/rent.jpg" >
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="right-content">
+                                      <h2>Studio Rental</h2>
+                                      <p>We are also providing the studio rental services to the customers.</p>
+                                      <!-- <div class="main-btn"><a href="#4">Continue Reading</a></div> -->
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="slide" id="3">
+    <div class="content fourth-content">
+      <div class="gallery-menu text-center row">
+				<div class="col-md-12">
+					<div class="button-group filter-button-group">
+						<button id="allgallery"  (click)="AllGallery()">All</button>
+						<button id="weddinggallery" (click)="WeddingGallery()">Wedding</button>
+						<button id="modelsgallery" (click)="ModelGallery()">Models</button>
+						<button id="eventgallery" (click)="EventGallery()">Event</button>
+            <button id="videogallery" (click)="VideoGallery()">Video</button>
+					</div>
+				</div>
+			</div>
+        <div class="container-fluid">
+            <div class="row">
+              <div class="bg_move">
+                <h3>{{gallerytypename}}</h3>
+            </div>
+                <div class="col-md-4 col-sm-6" *ngFor="let galleryitem of Iimagegallery">
+                    <div class="item">
+                        <div class="thumb" *ngIf="galleryitem.galleryType!='Video'">
+                            <a href="#imagezoom" (click)="galleryClick(galleryitem.data)" data-lightbox="image-1"><div class="hover-effect">
+                            </div></a>
+                          
+                            <div class="image">
+                                <img src="{{galleryitem.data}}">
+                            </div>
+                        </div>
+                        <div class="thumb" *ngIf="galleryitem.galleryType=='Video'">
+                          <div class="image">
+                            <video class="galleryvideo" controls controlsList="nodownload" ><source src="{{galleryitem.data}}" type="video/mp4"></video>
+                          </div>
+                      </div>
+                      
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="slide" id="4">
+    <div class="content second-content">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="left-content">
+                    <h2>About Us</h2>
+                    <h5>Welcome To Rainbowhut studio</h5>
+                    <p>Located in Puttur, We have been serving the needs of the photographic community for over {{Experinced_year}} Years. Well known for the superior quality of our prints, photo books & Albums and our excellent customer service, we have become the lab of choice for professional photographers and savvy consumers. We believe in innovation and the need for evolving with time and hence we are now venturing into providing the same high quality and services on this online platform. Our mission remains the same, to take the most important moments of your life and make them last forever.</p> 
+                    <p>We at Rainbowhut, treasure your memories and make them come to life with high-quality Photo products and excellent service at an affordable price.</p> 
+                    <h5>Why Rainbowhut studio?</h5>
+                    <p>At Rainbowhut we use the most technologically advanced Hi-end printers, top quality imported papers and state-of-the-art software. Each and every aspect of a finished product is made with great attention to detail. From the paper to the layout and the final print, each step is carefully rendered keeping in mind your satisfaction.</p> 
+                    <p>Our online platform offers a variety of services such as hand-crafted photo albums, photo books, canvas, Calendars, and photo gift products at an affordable price.
+                      The easy to use interface enables you to design your own products as per your tastes using the various customization choices available and have the final product delivered right at your doorstep!</p> 
+                  <!-- <div class="main-btn"><a href="#3">Read More</a></div> -->
+              </div>
+            </div>
+            <!-- <div class="col-md-6">
+                <div class="right-image">
+                  <img src="assets/images/about_image.jpg" alt="">
+              </div>
+            </div> -->
+        </div>
+    </div>
+  </div>
+  <div class="slide" id="5">
+    <div class="content fifth-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6">
+                <div id="map">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3891.138498129341!2d75.18578091460972!3d12.76951639098868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba4bdb8b43b114d%3A0x7d8a76aa6263cdab!2sRainbow%20Hut%20Studio&#39;s!5e0!3m2!1sen!2sin!4v1670167329068!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="right-content">
+                <h2>Get in touch</h2>
+                <p>Address:Rainbow Hut Studio,Manjalpadpu,main road,Puttur,Karnataka-574203</p>
+                <p>Contact:+91 8884257357</p>
+                <p>Email:rainbowhutofficial@gmail.com</p>
+                <a href="https://www.facebook.com/RainbowHutStudio" target="_blank"><img class="social-icon" src="assets/images/icons8-facebook-24.png"></a> 
+                <a href="https://instagram.com/rainbowhut_official?igshid=YmMyMTA2M2Y=" target="_blank"> <img class="social-icon" src="assets/images/icons8-instagram-24.png"></a> 
+                <a href="https://www.youtube.com/@RainbowHutOfficial" target="_blank"> <img class="social-icon" src="assets/images/icons8-youtube-24.png" ></a> 
+                <!-- <div class="main-btn"><a href="#4">Continue Reading</a></div> -->
+            </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <form id="contact"  form="ngform" (ngSubmit)="SendMail()">
+                <div class="row">
+                    <div class="col-md-12">
+                      <fieldset>
+                        <input name="name" type="text" class="form-control" id="name" placeholder="Your name..." required="" [(ngModel)]="contactus.name">
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+                      <fieldset>
+                        <input name="email" type="email" class="form-control" id="email" placeholder="Your email..." required="" [(ngModel)]="contactus.email">
+                      </fieldset>
+                    </div>
+                     <div class="col-md-12">
+                      <fieldset>
+                        <input name="subject" type="text" class="form-control" id="subject" placeholder="Subject..." required="" [(ngModel)]="contactus.subject">
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+                      <fieldset>
+                        <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your message..." required="" [(ngModel)]="contactus.message"></textarea>
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+                      <fieldset>
+                        <button type="submit" id="form-submit" class="btn">Send Now</button>
+                      </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    </div>
+  </div>
+
+  <!--Admin-->
+  <div class="slide" id="admin_studio_8884257357" style="background-image: url(../assets/images/third_bg.jpg);">
+   
+    <div class="content admin-content">
+      <div class="container-fluid" *ngIf="adminLoginbtn">
+        <button (click)="GetOtp()"class="buttonstylelogin"data-text="LOGIN"> <span>Let's Go...</span></button>
+      </div>
+      <div class="container-fluid" *ngIf="adminLogin">
+        <div class="row admincard">
+          <div class="col-12">
+              <h3  style="text-decoration: underline;">VERIFY OTP</h3><br>
+              <input class="txtotp" type="tel"  placeholder="Enter OTP" maxlength="4" [(ngModel)]="enteredotp" required/>
+              <br> <br>
+              <h5><span id="time" class="text-primary" *ngIf="otptimer">{{time}}</span></h5>
+              <br>
+              <button type="button" (click)="SendOTP()"  id="otpsubmit" class="btnvarify">VERIFY</button>
+              <br>
+              <br>
+              <p *ngIf="resendotp" style="color: red;margin-right:5px ;">OTP is expired!! <a (click)="GetOtp()" style="cursor: pointer;color: blue;" >Resend otp</a></p>
+      </div>
+      </div>
+      </div>
+      
+        <div class="container-fluid" *ngIf="adminsecurity">
+            <div class="row admincard">
+                <div class="col-12">
+                    <h3  style="text-decoration: underline;">PROFILE IMAGE</h3><br>
+                    <input type="file" id="profile" accept="image/*"  (change)="profileImage($event)" class="fileupload" />
+                    <button (click)="profileImageUpload()"class="buttonstyle">UPLOAD</button>
+              <table class="table table-stripe" >
+                <thead class="thead-dark"><tr>
+                    <th>ID</th>
+                <th>Image</th>
+                </tr></thead>
+                <tbody>
+                <tr >
+                    <td>1</td>
+                    <td><img class="tableimage" src="{{imageprofile[2]}}" /></td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="row admincard">
+                <div class="col-12">
+                    <h3  style="text-decoration: underline;">SLIDE SHOW IMAGE</h3><br>
+                    <input type="file" id="profile" accept="image/*"  (change)="slideshowImage($event)" class="fileupload" />
+                    <button (click)="slideshowImageUpload()"class="buttonstyle">UPLOAD</button>
+              <table class="table table-stripe" >
+                <thead class="thead-dark"><tr>
+                    <th>ID</th>
+                <th>Image</th>
+                <th> Action </th>
+                </tr></thead>
+                <tbody>
+                  <tr *ngFor="let slideitem of imageslideshow">
+                    <td>{{slideitem.id}}</td>
+                    <td><img class="tableimage" src="{{slideitem.data}}" /></td>
+                    <td> <button  (click)="deleteRowSlideShow(slideitem.id)"><mat-icon class='btn-delete'>delete</mat-icon></button> </td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="row admincard">
+                <div class="col-12">
+                    <h3 style="text-decoration: underline;">GALLERY IMAGE</h3><br>
+                    <select class="selectbox" (change)="selectChangeHandler($event)">
+                      <option >---Select---</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Events">Events</option>
+                    <option value="Model">Model</option>
+                    <option value="Video">Video</option>
+                    </select><br>
+                    <input type="file" id="profile" accept="image/*,video/mp4"  (change)="galleryImage($event)" class="fileupload" />
+                    <button (click)="galleryImageUpload()"class="buttonstyle">UPLOAD</button>
+              <table class="table table-stripe" >
+                <thead class="thead-dark"><tr>
+                    <th>ID</th>
+                    <th>GalleryType</th>
+                <th>Image/Video</th>
+                <th> Action </th>
+                </tr></thead>
+                <tbody>
+                  <tr *ngFor="let galleryitem of imagegallery">
+                    <td>{{galleryitem.id}}</td>
+                    <td>{{galleryitem.galleryType}}</td>
+                    <td *ngIf="galleryitem.galleryType!='Video'"><img class="tableimage" src="{{galleryitem.data}}" /></td>
+                    <td *ngIf="galleryitem.galleryType=='Video'"><video class="tableimage" controls><source src="{{galleryitem.data}}" type="video/mp4"></video></td>
+                    <td> <button (click)="deleteRowGallery(galleryitem.id)"><mat-icon class='btn-delete'>delete</mat-icon></button> </td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
+
+            <div class="row admincard">
+              <div class="col-12">
+                  <h3  style="text-decoration: underline;">QR Code</h3><br>
+                  <input type="file" id="qrfile" accept="application/pdf,application/zip"  (change)="QrCodeFile($event)" class="fileupload" />
+                  <button (click)="QrCodeFileUpload()"class="buttonstyle">UPLOAD</button>
+            <table class="table table-stripe" >
+              <thead class="thead-dark"><tr>
+                  <th>QrCode</th>
+              </tr></thead>
+              <tbody>
+                <tr >
+                  <td> <img class="tableimages" src="{{qrcode.data}}" /><mat-icon class="top-right" *ngIf="downloadbtn" (click)="QrCodeDownload({qrcode})">cloud_download</mat-icon></td>
+              </tr>
+              </tbody>
+              </table>
+          </div>
+          </div>
+
+        </div>
+    </div>
+  </div>
+  
+</div>
+<div class="lightbox-target" *ngIf="imagezoomgallery" id="imagezoom">
+  <img src="{{galleryImage}}">
+  <a class="lightbox-close" href="#"></a>
+</div>
+<!-- <div class="footer">
+  <div class="content">
+      <p>Copyright &copy; 2018 Your Company . <a href="http://www.templatemo.com/tm-512-moonlight">Moonlight</a> by <a href="http://www.html5max.com" target="_parent">HTML5 Max</a></p>
+  </div>
+</div> -->
+
+<!-- <div class="footer">
+  <div class="content">
+      <p>Copyright &copy; 2018 Your Company . <a href="http://www.templatemo.com/tm-512-moonlight">Moonlight</a> by <a href="http://www.html5max.com" target="_parent">HTML5 Max</a></p>
+  </div>
+</div> -->
+
+</body>
+</html>
