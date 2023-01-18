@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
    
    }
   ngOnInit(): void {
-    // this.GetAllImage();
+     this.GetAllImage();
     
   }
 //Sendmail
@@ -80,18 +80,17 @@ GetOtp(){
   this.loading = true;
   this.sharedservice.GetOtp().subscribe(
     response=>{
+      console.log(response);
  if(response.toString()!="Failed")
  {
+  debugger;
    this.sharedservice.SetOtp(response.toString());
         this.startTimer();
         this.adminLoginbtn=false;
-  this. adminLogin=true;
+        this. adminLogin=true;
         this.otptimer=true;
         this.resendotp=false;
         this.loading = false;
-        this.GetProfileImage();
-        this.GetSlideShowImage();
-        this.GetGalleryImage();
    
  }
  else{
@@ -136,6 +135,9 @@ SendOTP(){
     this.adminLoginbtn=false;
     this. adminLogin=false;
     this. adminsecurity=true;
+    this.GetProfileImage();
+    this.GetSlideShowImage();
+    this.GetGalleryImage();
     this.loading = false;
     this.sharedservice.ClearOtp();
   }
@@ -147,9 +149,16 @@ SendOTP(){
 }
 profileImage(event:any) {
   let file: File = event.target.files[0];
-  const formData = new FormData();
+  if(file.size/1024/1024 <15 )
+  {
+    const formData = new FormData();
     formData.append('file', file, file.name);
     this.sharedservice.SetFormData(formData);
+  }
+  else{
+    this.alertify.error("file is bigger than 15MB")
+  }
+  
  
 }
 profileImageUpload(){
@@ -157,6 +166,7 @@ profileImageUpload(){
   let formdata=this.sharedservice.GetFormData();
   this.sharedservice.UploadProfileImage(formdata).subscribe(
     (     response: { toString: () => string; })=>{
+      debugger;
      if(response.toString()=="Success")
      {
        this.loading = false;
@@ -174,9 +184,15 @@ profileImageUpload(){
 }
 slideshowImage(event:any) {
   let file: File = event.target.files[0];
+  if(file.size/1024/1024 <15 )
+  {
   const formData = new FormData();
     formData.append('file', file, file.name);
     this.sharedservice.SetFormData(formData);
+  }
+  else{
+    this.alertify.error("file is bigger than 15MB")
+  }
  
 }
 slideshowImageUpload(){
@@ -184,6 +200,7 @@ slideshowImageUpload(){
   let formdata=this.sharedservice.GetFormData();
   this.sharedservice.UploadSlideshowImage(formdata).subscribe(
     (     response: { toString: () => string; })=>{
+      debugger;
      if(response.toString()=="Success")
      {
        this.loading = false;
@@ -204,8 +221,14 @@ selectChangeHandler (event: any) {
 }
 galleryImage(event:any) {
   let file: File = event.target.files[0];
-  
+  if(file.size/1024/1024 <100 )
+  {
     this.sharedservice.SetFileData(file);
+  }
+  else{
+    this.alertify.error("file is bigger than 100MB")
+  }
+    
 }
 galleryImageUpload(){
   this.loading = true;
@@ -215,6 +238,7 @@ galleryImageUpload(){
     formData.append(type, file, file.name);
   this.sharedservice.UploadGalleryImage(formData).subscribe(
     (     response: { toString: () => string; })=>{
+      debugger;
      if(response.toString()=="Success")
      {
        this.loading = false;
@@ -233,9 +257,16 @@ galleryImageUpload(){
 
 QrCodeFile(event:any) {
   let file: File = event.target.files[0];
-  const formData = new FormData();
+  if(file.size/1024/1024 <100 )
+  {
+    const formData = new FormData();
     formData.append('file', file, file.name);
     this.sharedservice.SetFormData(formData);
+  }
+  else{
+    this.alertify.error("file is bigger than 100MB")
+  }
+  
  
 }
 QrCodeFileUpload(){
@@ -243,6 +274,7 @@ QrCodeFileUpload(){
   let formdata=this.sharedservice.GetFormData();
   this.sharedservice.QrCodeFileUpload(formdata).subscribe(
     (     response: { toString: () => string; })=>{
+      debugger;
      if(response.toString()!="Failed")
      {
         this.loading = false;
@@ -263,9 +295,9 @@ GetProfileImage(){
   this.loading = true;
    this.sharedservice.GetProfileImage().subscribe(
          response=>{
-          console.log(response);
       if(response.toString()!="Failed")
       {
+        debugger;
         this.loading = false;
         this.imageprofile=Object.values(response);
       }
@@ -300,7 +332,6 @@ GetGalleryImage(){
       {
         this.loading = false;
         this.imagegallery=Object.values(response);
-        this.sharedservice.SetGalleryImage(this.imagegallery);
       }
       else{
         this.loading = false;
@@ -313,13 +344,14 @@ GetAllImage(){
   this.loading = true;
    this.sharedservice.GetAllImage().subscribe(
          response=>{
-          console.log(response);
       if(response.toString()!="Failed")
       {
+        debugger;
         this.loading = false;
         this.Iimageprofile=response.profilemodel;
         this.Iimageslideshow=response.slideshowmodel;
         this.Iimagegallery=response.gallerymodel;
+        this.sharedservice.SetGalleryImage(this.Iimagegallery);
       }
       else{
         this.loading = false;
@@ -329,31 +361,36 @@ GetAllImage(){
 
 }
 AllGallery(){
-this.imagegallery=this.sharedservice.GetGalleryImagess();
+  debugger;
+this.Iimagegallery=this.sharedservice.GetGalleryImagess();
 this.gallerytypename='All';
 }
 WeddingGallery(){
+  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
-  this.imagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Wedding");
+  this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Wedding");
   this.gallerytypename='Wedding';
 }
 ModelGallery(){
+  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
-  this.imagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Model");
+  this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Model");
   this.gallerytypename='Model';
 }
 EventGallery(){
+  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
-  this.imagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Events");
+  this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Events");
   this.gallerytypename='Events';
 }
 VideoGallery(){
+  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
-  this.imagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Video");
+  this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Video");
   this.gallerytypename='Video';
 }
 deleteRowSlideShow(d:any){
@@ -393,6 +430,7 @@ deleteRowGallery(d:any){
 }
 galleryClick(data:any)
 {
+  debugger;
   this.galleryImage=data;
   this.imagezoomgallery=true;
 }

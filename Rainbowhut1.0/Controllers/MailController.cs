@@ -24,7 +24,15 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 int otp=await _mailDomain.SendOtp();
-                return Ok(otp);
+                if (otp != 0)
+                {
+                    return new JsonResult(otp);
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+               // return Ok(otp);
             }
             catch (Exception ex)
             {
@@ -38,8 +46,16 @@ namespace Rainbowhut1._0.Controllers
         {
             try
             {
-                await _mailDomain.SendEmailAsync(contact);
-                return Ok();
+                int output = await _mailDomain.SendEmailAsync(contact);
+                if (output == 1)
+                {
+                    return new JsonResult("Success");
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok();
             }
             catch (Exception ex)
             {

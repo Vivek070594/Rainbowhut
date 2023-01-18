@@ -12,28 +12,41 @@ namespace Rainbowhut1._0.Persistances.Repository
         private readonly IRepository<GalleryModel> _grepository;
         private readonly IRepository<SlideShowModel> _srepository;
         private readonly IRepository<QrCodeModel> _qrepository;
-        public UploadDataRepository(IRepository<ProfileModel> prepository, IRepository<GalleryModel> grepository, IRepository<SlideShowModel> srepository, IRepository<QrCodeModel> qrepository)
+        private readonly IConfiguration configuration;
+        public UploadDataRepository(IRepository<ProfileModel> prepository, IRepository<GalleryModel> grepository, IRepository<SlideShowModel> srepository, IRepository<QrCodeModel> qrepository, IConfiguration configuration)
         {
             _prepository = prepository;
             _grepository = grepository;
             _srepository = srepository;
             _qrepository = qrepository;
+            this.configuration = configuration;
         }
-        public async Task ProfileImageUpdate(ProfileModel model)
+        public async Task<int> ProfileImageUpdate(ProfileModel model)
         {
-           // _prepository.Add(model);
-            _prepository.Update(model);
-            await _prepository.SaveAsync();
+            string isAdd = configuration.GetSection("Value").GetSection("isAdd").Value;
+            if (isAdd == "true")
+            {
+                _prepository.Add(model);
+            }
+            else
+            {
+                _prepository.Update(model);
+            }
+
+            int id = await _prepository.SaveAsyncWithReturn();
+            return id;
         }
-        public async Task GalleryImageAdd(GalleryModel model)
+        public async Task<int> GalleryImageAdd(GalleryModel model)
         {
             _grepository.Add(model);
-            await _grepository.SaveAsync();
+            int id = await _grepository.SaveAsyncWithReturn();
+            return id;
         }
-        public async Task SlideImageAdd(SlideShowModel model)
+        public async Task<int> SlideImageAdd(SlideShowModel model)
         {
             _srepository.Add(model);
-            await _srepository.SaveAsync();
+            int id = await _srepository.SaveAsyncWithReturn();
+            return id;
         }
         public async Task<int> QrCodeFileAdd(QrCodeModel model)
         {
@@ -59,15 +72,17 @@ namespace Rainbowhut1._0.Persistances.Repository
 
             return await _srepository.FirstOrDefaultAsync(expressions.ToArray());
         }
-        public async Task DeleteGalleryAsync(GalleryModel model)
+        public async Task<int> DeleteGalleryAsync(GalleryModel model)
         {
             _grepository.Delete(model);
-            await _grepository.SaveAsync();
+            int id = await _grepository.SaveAsyncWithReturn();
+            return id;
         }
-        public async Task DeleteSlideshowAsync(SlideShowModel model)
+        public async Task<int> DeleteSlideshowAsync(SlideShowModel model)
         {
             _srepository.Delete(model);
-            await _srepository.SaveAsync();
+            int id = await _srepository.SaveAsyncWithReturn();
+            return id;
         }
         public async Task<ProfileModel> GetProfileImage(UploadFilter filter)
         {
@@ -138,17 +153,17 @@ namespace Rainbowhut1._0.Persistances.Repository
     }
     public interface IUploadDataRepository
     {
-        Task ProfileImageUpdate(ProfileModel model);
-        Task GalleryImageAdd(GalleryModel model);
+        Task<int> ProfileImageUpdate(ProfileModel model);
+        Task<int> GalleryImageAdd(GalleryModel model);
 
-        Task SlideImageAdd(SlideShowModel model);
+        Task<int> SlideImageAdd(SlideShowModel model);
 
         Task<int> QrCodeFileAdd(QrCodeModel model);
 
         Task<GalleryModel> GetGalleryByIdAsync(int id);
         Task<SlideShowModel> GetSlideShowByIdAsync(int id);
-        Task DeleteGalleryAsync(GalleryModel model);
-        Task DeleteSlideshowAsync(SlideShowModel model);
+        Task<int> DeleteGalleryAsync(GalleryModel model);
+        Task<int> DeleteSlideshowAsync(SlideShowModel model);
 
         Task<ProfileModel> GetProfileImage(UploadFilter filter);
         Task<List<SlideShowModel>> GetSlideShowImage(UploadFilter filter);

@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using ZXing.QrCode;
 using System;
 using Rainbowhut1._0.Persistances.Repository;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace Rainbowhut1._0.Domain
 {
@@ -20,88 +21,99 @@ namespace Rainbowhut1._0.Domain
     {
         private readonly IUploadDataRepository _uploadRepository;
         private readonly IConfiguration configuration;
-        public UploadDataDomain(IUploadDataRepository uploadRepository, IConfiguration configuration)
+        private IWebHostEnvironment _hostingEnvironment;
+        public UploadDataDomain(IUploadDataRepository uploadRepository, IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             _uploadRepository = uploadRepository;
             this.configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
-        public async Task ProfileImageUpdate(IFormFile files)
+        public async Task<int> ProfileImageUpdate(IFormFile files)
         {
+            int result = 0;
             ProfileModel fileModel = new ProfileModel();
            
             try
             {
                 if (files.Length > 0)
                 {
-                    fileModel.ContentType = files.ContentType;
-                    using (var ms = new MemoryStream())
+                    string folderPath = Path.Combine(_hostingEnvironment.ContentRootPath, configuration.GetSection("Path").GetSection("profilepath").Value);
+                    System.IO.DirectoryInfo folderInfo = new DirectoryInfo(folderPath);
+                    foreach (FileInfo file in folderInfo.GetFiles())
                     {
-                        files.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        string base64 = Convert.ToBase64String((byte[])fileBytes);
-                        fileModel.Data = "data:" + files.ContentType + "; base64," + base64;
+                        file.Delete();
                     }
+                    string Name = Guid.NewGuid().ToString() +"-"+ files.FileName;
+                    string fullpath = folderPath + Name;
+                    using (var stream = new FileStream(fullpath, FileMode.Create))
+                    {
+                        files.CopyTo(stream);
+                    }
+                    fileModel.Path = fullpath;
+                    fileModel.ViewPath = configuration.GetSection("Path").GetSection("viewprofilepath").Value + Name;
                 }
-                  await _uploadRepository.ProfileImageUpdate(fileModel);
+                result = await _uploadRepository.ProfileImageUpdate(fileModel);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            return result;
            
         }
-        public async Task GalleryImageAdd(IFormFile files)
+        public async Task<int> GalleryImageAdd(IFormFile files)
         {
-            
+            int result = 0;
             GalleryModel galleryModel = new GalleryModel();
             try
             {
                 if (files.Length > 0)
                 {
-                    galleryModel.ContentType = files.ContentType;
-                    using (var ms = new MemoryStream())
+                    string folderPath = Path.Combine(_hostingEnvironment.ContentRootPath, configuration.GetSection("Path").GetSection("gallerypath").Value);
+                    string Name = Guid.NewGuid().ToString() + "-" + files.FileName;
+                    string fullpath = folderPath + Name;
+                    using (var stream = new FileStream(fullpath, FileMode.Create))
                     {
-                        files.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        string base64 = Convert.ToBase64String((byte[])fileBytes);
-                        galleryModel.Data = "data:" + files.ContentType + "; base64," + base64;
+                        files.CopyTo(stream);
                     }
+                    galleryModel.Path = fullpath;
+                    galleryModel.ViewPath = configuration.GetSection("Path").GetSection("viewgallerypath").Value + Name;
                 }
                 galleryModel.GalleryType = files.Name;
-                await _uploadRepository.GalleryImageAdd(galleryModel);
+                result = await _uploadRepository.GalleryImageAdd(galleryModel);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-           
+            return result;
         }
 
-        public async Task SlideImageAdd(IFormFile files)
+        public async Task<int> SlideImageAdd(IFormFile files)
         {
-           
+            int result = 0;
             SlideShowModel fileModel = new SlideShowModel();
             try
             {
                 if (files.Length > 0)
                 {
-                    fileModel.ContentType = files.ContentType;
-                    using (var ms = new MemoryStream())
+                    string folderPath = Path.Combine(_hostingEnvironment.ContentRootPath, configuration.GetSection("Path").GetSection("slidepath").Value);
+                    string Name = Guid.NewGuid().ToString() + "-" + files.FileName;
+                    string fullpath = folderPath + Name;
+                    using (var stream = new FileStream(fullpath, FileMode.Create))
                     {
-                        files.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        string base64 = Convert.ToBase64String((byte[])fileBytes);
-                        fileModel.Data = "data:" + files.ContentType + "; base64," + base64;
-
+                        files.CopyTo(stream);
                     }
+                    fileModel.Path = fullpath;
+                    fileModel.ViewPath = configuration.GetSection("Path").GetSection("viewslidepath").Value + Name;
                 }
-                 await _uploadRepository.SlideImageAdd(fileModel);
+                result = await _uploadRepository.SlideImageAdd(fileModel);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-           
+            return result;
         }
         public async Task<QrCodeViewModel> QrCodeFileAdd(IFormFile files)
         {
@@ -121,15 +133,14 @@ namespace Rainbowhut1._0.Domain
                 }
                 if (files.Length > 0)
                 {
-                    fileModel.ContentType = files.ContentType;
-                    fileModel.FileName = files.FileName;
-                    using (var ms = new MemoryStream())
+                    string folderPath = Path.Combine(_hostingEnvironment.ContentRootPath, configuration.GetSection("Path").GetSection("qrpath").Value);
+                    string Name = Guid.NewGuid().ToString() + "-" + files.FileName;
+                    string fullpath = folderPath + Name;
+                    using (var stream = new FileStream(fullpath, FileMode.Create))
                     {
-                        files.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        string base64pdf = Convert.ToBase64String((byte[])fileBytes);
-                        fileModel.Data = "data:" + files.ContentType + "; base64," + base64pdf;
+                        files.CopyTo(stream);
                     }
+                    fileModel.Path = fullpath;
                     fileModel.ID = latestid;
                 }
                 Guid _key = Guid.NewGuid();
@@ -172,9 +183,9 @@ namespace Rainbowhut1._0.Domain
                         }
                     }
 
-                    base64 = "data:image / jpeg; base64," + Convert.ToBase64String((byte[])byteArray);
+                    //base64 = "data:image / jpeg; base64," + Convert.ToBase64String((byte[])byteArray);
 
-                    qrview.Data = base64;
+                    qrview.Data = byteArray;
                     qrview.FileName = Path.GetFileNameWithoutExtension(files.FileName);
                 }
             }
@@ -185,33 +196,44 @@ namespace Rainbowhut1._0.Domain
             return qrview;
 
         }
-        public async Task GalleryImageDelete(int id)
+        public async Task<int> GalleryImageDelete(int id)
         {
-           
+            int result = 0;
             try
             {
                 var Data = await _uploadRepository.GetGalleryByIdAsync(id);
-                await _uploadRepository.DeleteGalleryAsync(Data);
+                FileInfo file = new FileInfo(Data.Path);
+                if (file.Exists) 
+                {
+                    file.Delete();
+                    result = await _uploadRepository.DeleteGalleryAsync(Data);
+                }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            
+            return result;
         }
-        public async Task SlideImageDelete(int id)
+        public async Task<int> SlideImageDelete(int id)
         {
-            
+            int result = 0;
             try
             {
                 var Data = await _uploadRepository.GetSlideShowByIdAsync(id);
-                await _uploadRepository.DeleteSlideshowAsync(Data);
+                FileInfo file = new FileInfo(Data.Path);
+                if (file.Exists)//check file exsit or not  
+                {
+                    file.Delete();
+                    result = await _uploadRepository.DeleteSlideshowAsync(Data);
+                }
+                
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-           
+            return result;
         }
         public async Task<ProfileModel> GetProfileImage()
         {
@@ -258,11 +280,11 @@ namespace Rainbowhut1._0.Domain
             try
             {
                 result = await _uploadRepository.GetQrCodeFiles(id, guid);
-                if (result != null)
-                {
-                    string base64 = result.Data.Split("data:" + result.ContentType + "; base64,")[1];
-                    result.Data = base64;
-                }
+                //if (result != null)
+                //{
+                //    string base64 = result.Data.Split("data:" + result.ContentType + "; base64,")[1];
+                //    result.Data = base64;
+                //}
             }
             catch (Exception ex)
             {
@@ -278,6 +300,10 @@ namespace Rainbowhut1._0.Domain
                 result.profilemodel = await _uploadRepository.GetProfileImage(null);
                 result.slideshowmodel = await _uploadRepository.GetSlideShowImage(null);
                 result.gallerymodel = await _uploadRepository.GetGalleryImage(null);
+                if(result.profilemodel == null && result.slideshowmodel.Count==0 && result.gallerymodel.Count==0)
+                {
+                    result = null;
+                }
             }
             catch (Exception ex)
             {

@@ -15,8 +15,8 @@ namespace Rainbowhut1._0.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public string ContentType { get; set; }
-        public string Data { get; set; }
+        public string Path { get; set; }
+        public string ViewPath { get; set; }
     }
     [Table("PROD_SLIDESHOW_DATA")]
     public class SlideShowModel
@@ -24,23 +24,21 @@ namespace Rainbowhut1._0.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public string ContentType { get; set; }
-        public string Data { get; set; }
+        public string Path { get; set; }
+        public string ViewPath { get; set; }
     }
     [Table("PROD_QRCODE_DATA")]
     public class QrCodeModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
-        public string FileName { get; set; }
-        public string ContentType { get; set; }
-        public string Data { get; set; }
+        public string Path { get; set; }
         public Guid KeyID { get; set; }
     }
     public class QrCodeViewModel
     {
         public string FileName { get; set; }
-        public string Data { get; set; }
+        public byte[] Data { get; set; }
     }
     [Table("PROD_GALLERY_DATA")]
     public class GalleryModel
@@ -48,22 +46,9 @@ namespace Rainbowhut1._0.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public string ContentType { get; set; }
-        public string Data { get; set; }
-
+        public string Path { get; set; }
+        public string ViewPath { get; set; }
         public string GalleryType { get; set; }
     }
-    //public class GalleryViewModel
-    //{
-    //    public string Data { get; set; }
-    //    public string GalleryType { get; set; }
-    //}
-    //public class ProfileViewModel
-    //{
-    //    public string Data { get; set; }
-    //}
-    //public class SlideShowViewModel
-    //{
-    //    public string Data { get; set; }
-    //}
+   
 }

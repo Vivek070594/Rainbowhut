@@ -7,18 +7,20 @@ using Rainbowhut1._0.Model;
 
 namespace Rainbowhut1._0.Controllers
 {
-    //[EnableCors("RainbowhutPolicy")]
+    [EnableCors("RainbowhutPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class UploadDataController : ControllerBase
     {
         private UploadDataDomain _uploaddataDomain;
         private readonly ILogger<UploadDataController> _logger;
+        private readonly IConfiguration configuration;
 
-        public UploadDataController(UploadDataDomain uploadDomain, ILogger<UploadDataController> logger)
+        public UploadDataController(UploadDataDomain uploadDomain, ILogger<UploadDataController> logger, IConfiguration configuration)
         {
             _uploaddataDomain = uploadDomain;
             _logger = logger;
+            this.configuration = configuration;
         }
         [HttpPost]
         [Route("[action]")]
@@ -27,8 +29,16 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 IFormFile files = Request.Form.Files[0];
-                await _uploaddataDomain.ProfileImageUpdate(files);
-                return Ok();
+                int output= await _uploaddataDomain.ProfileImageUpdate(files);
+                if (output == 1)
+                {
+                    return new JsonResult("Success");
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+               // return Ok();
             }
             catch (Exception ex)
             {
@@ -36,15 +46,23 @@ namespace Rainbowhut1._0.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpPost]
+        [HttpPost, DisableRequestSizeLimit]
         [Route("[action]")]
         public async Task<IActionResult> GalleryImageAdd()
         {
             try
             {
                 IFormFile files = Request.Form.Files[0];
-                await _uploaddataDomain.GalleryImageAdd(files);
-                return Ok();
+                int output = await _uploaddataDomain.GalleryImageAdd(files);
+                if (output == 1)
+                {
+                    return new JsonResult("Success");
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok();
             }
             catch (Exception ex)
             {
@@ -59,8 +77,16 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 IFormFile files = Request.Form.Files[0];
-                await _uploaddataDomain.SlideImageAdd(files);
-                return Ok();
+                int output = await _uploaddataDomain.SlideImageAdd(files);
+                if (output == 1)
+                {
+                    return new JsonResult("Success");
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok();
             }
             catch (Exception ex)
             {
@@ -76,7 +102,15 @@ namespace Rainbowhut1._0.Controllers
             {
                 IFormFile files = Request.Form.Files[0];
                 QrCodeViewModel qrview=await _uploaddataDomain.QrCodeFileAdd(files);
-                return Ok(qrview);
+                if (qrview != null)
+                {
+                    return new JsonResult(qrview);
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok(qrview);
             }
             catch (Exception ex)
             {
@@ -90,8 +124,16 @@ namespace Rainbowhut1._0.Controllers
         {
             try
             {
-                await _uploaddataDomain.GalleryImageDelete(id);
-                return Ok();
+                int output = await _uploaddataDomain.GalleryImageDelete(id);
+                if (output == 1)
+                {
+                    return new JsonResult("Success");
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok();
             }
             catch (Exception ex)
             {
@@ -105,8 +147,16 @@ namespace Rainbowhut1._0.Controllers
         {
             try
             {
-                await _uploaddataDomain.SlideImageDelete(id);
-                return Ok();
+                int output = await _uploaddataDomain.SlideImageDelete(id);
+                if (output == 1)
+                {
+                    return new JsonResult("Success");
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok();
             }
             catch (Exception ex)
             {
@@ -121,7 +171,15 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 var result = await this._uploaddataDomain.GetProfileImage();
-                return Ok(result);
+                if (result != null)
+                {
+                    return new JsonResult(result);
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok(result);
             }
             catch (Exception ex)
             {
@@ -136,7 +194,15 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 var result = await this._uploaddataDomain.GetSlideShowImage();
-                return Ok(result);
+                if (result != null)
+                {
+                    return new JsonResult(result);
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok(result);
             }
             catch (Exception ex)
             {
@@ -151,7 +217,15 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 var result = await this._uploaddataDomain.GetGalleryImage();
-                return Ok(result);
+                if (result != null)
+                {
+                    return new JsonResult(result);
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok(result);
             }
             catch (Exception ex)
             {
@@ -166,7 +240,16 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 var result = await this._uploaddataDomain.GetAllImage();
-                return Ok(result);
+                if (result != null)
+                {
+                    return new JsonResult(result);
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
+                //return Ok(result);
+                //return new JsonResult(result);
             }
             catch (Exception ex)
             {
@@ -187,8 +270,10 @@ namespace Rainbowhut1._0.Controllers
             }
             else
             {
-                byte[] temp_backToBytes = Convert.FromBase64String(qr.Data);
-                return File(temp_backToBytes, qr.ContentType, qr.FileName);
+                byte[] bytes = System.IO.File.ReadAllBytes(qr.Path);
+                string filename = qr.Path.Split("-")[1];
+                //byte[] temp_backToBytes = Convert.FromBase64String(qr.Data);
+                return File(bytes, "application/pdf", filename);
             }
 
 

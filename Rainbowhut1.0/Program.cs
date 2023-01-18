@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -15,25 +16,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddCors(o => o.AddPolicy("RainbowhutPolicy", builder =>
-//{
-//    builder.WithOrigins("https://hnrbms.in/").WithOrigins("https://dev.hnrbms.in/")
-//           .AllowAnyOrigin()
-//           .AllowAnyMethod()
-//           .AllowAnyHeader();
-//}));
-builder.Services.AddCors(options =>
+builder.Services.AddCors(o => o.AddPolicy("RainbowhutPolicy", builder =>
 {
-    options.AddDefaultPolicy(
-        builder =>
-        {
+    builder.WithOrigins("http://localhost:4200")
+           .AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
+//builder.Services.AddCors(options =>
+//{
+//    options.AddDefaultPolicy(
+//        builder =>
+//        {
 
-            //you can configure your custom policy
-            builder.AllowAnyOrigin()
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-        });
-});
+//            //you can configure your custom policy
+//            builder.AllowAnyOrigin()
+//                                .AllowAnyHeader()
+//                                .AllowAnyMethod();
+//        });
+//});
 builder.Services.AddControllersWithViews();
 builder.Services.AddSpaStaticFiles(configuration =>
 {
@@ -42,6 +43,12 @@ builder.Services.AddSpaStaticFiles(configuration =>
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rainbowhut API", Version = "v1" });
+});
+builder.Services.Configure<FormOptions>(o =>
+{
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -62,16 +69,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("RainbowhutPolicy");
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-//app.UseCors("RainbowhutPolicy");
-app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+
+//app.UseCors(x => x
+//            .AllowAnyOrigin()
+//            .AllowAnyMethod()
+//            .AllowAnyHeader());
 app.UseStaticFiles();
 app.UseSpaStaticFiles();
 

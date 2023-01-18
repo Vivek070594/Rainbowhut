@@ -51,7 +51,7 @@
         <owl-carousel-o [options]="customOptions" >
           <ng-template  carouselSlide *ngFor="let slideitem of Iimageslideshow" >
             <div class="slide1" >
-              <img src="{{slideitem.data}}" class="top-owl">
+              <img src="{{slideitem.viewPath}}" class="top-owl">
             </div>
           </ng-template>
         </owl-carousel-o>
@@ -60,7 +60,7 @@
     <div class="fcontent first-fcontent">
       <div class="container-fluid"> 
            <div class="col-md-2">
-              <div class="author-image"><img src="{{Iimageprofile.data}}" alt=""></div>
+              <div class="author-image"><img src="{{Iimageprofile.viewPath}}" alt=""></div>
           </div>
           <div class="col-md-9 intro">
               <h2>Suprith Manoraj</h2>
@@ -79,7 +79,7 @@
         <owl-carousel-o [options]="customOptions1">
           <ng-template  carouselSlide *ngFor="let slideitem of Iimageslideshow" >
             <div class="slide1" >
-              <img src="{{slideitem.data}}" class="top-owl">
+              <img src="{{slideitem.viewPath}}" class="top-owl">
             </div>
           </ng-template>
         </owl-carousel-o>
@@ -193,16 +193,16 @@
                 <div class="col-md-4 col-sm-6" *ngFor="let galleryitem of Iimagegallery">
                     <div class="item">
                         <div class="thumb" *ngIf="galleryitem.galleryType!='Video'">
-                            <a href="#imagezoom" (click)="galleryClick(galleryitem.data)" data-lightbox="image-1"><div class="hover-effect">
+                            <a href="#imagezoom" (click)="galleryClick(galleryitem.viewPath)" data-lightbox="image-1"><div class="hover-effect">
                             </div></a>
                           
                             <div class="image">
-                                <img src="{{galleryitem.data}}">
+                                <img src="{{galleryitem.viewPath}}">
                             </div>
                         </div>
                         <div class="thumb" *ngIf="galleryitem.galleryType=='Video'">
                           <div class="image">
-                            <video class="galleryvideo" controls controlsList="nodownload" ><source src="{{galleryitem.data}}" type="video/mp4"></video>
+                            <video class="galleryvideo" controls controlsList="nodownload" ><source src="{{galleryitem.viewPath}}" type="video/mp4"></video>
                           </div>
                       </div>
                       
@@ -353,7 +353,7 @@
                 <tbody>
                   <tr *ngFor="let slideitem of imageslideshow">
                     <td>{{slideitem.id}}</td>
-                    <td><img class="tableimage" src="{{slideitem.data}}" /></td>
+                    <td><img class="tableimage" src="{{slideitem.viewPath}}" /></td>
                     <td> <button  (click)="deleteRowSlideShow(slideitem.id)"><mat-icon class='btn-delete'>delete</mat-icon></button> </td>
                 </tr>
                 </tbody>
@@ -383,8 +383,8 @@
                   <tr *ngFor="let galleryitem of imagegallery">
                     <td>{{galleryitem.id}}</td>
                     <td>{{galleryitem.galleryType}}</td>
-                    <td *ngIf="galleryitem.galleryType!='Video'"><img class="tableimage" src="{{galleryitem.data}}" /></td>
-                    <td *ngIf="galleryitem.galleryType=='Video'"><video class="tableimage" controls><source src="{{galleryitem.data}}" type="video/mp4"></video></td>
+                    <td *ngIf="galleryitem.galleryType!='Video'"><img class="tableimage" src="{{galleryitem.viewPath}}" /></td>
+                    <td *ngIf="galleryitem.galleryType=='Video'"><video class="tableimage" controls><source src="{{galleryitem.viewPath}}" type="video/mp4"></video></td>
                     <td> <button (click)="deleteRowGallery(galleryitem.id)"><mat-icon class='btn-delete'>delete</mat-icon></button> </td>
                 </tr>
                 </tbody>
@@ -403,7 +403,7 @@
               </tr></thead>
               <tbody>
                 <tr >
-                  <td> <img class="tableimages" src="{{qrcode.data}}" /><mat-icon class="top-right" *ngIf="downloadbtn" (click)="QrCodeDownload({qrcode})">cloud_download</mat-icon></td>
+                  <td> <img class="tableimages" src="data:image/jpg;base64,{{qrcode.data}}" /><mat-icon class="top-right" *ngIf="downloadbtn" (click)="QrCodeDownload({qrcode})">cloud_download</mat-icon></td>
               </tr>
               </tbody>
               </table>

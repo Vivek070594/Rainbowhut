@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\VIVEK\\Documents\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj": {}
+    "C:\\Users\\VIVEK\\Documents\\Rainbowhut2.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj": {}
   },
   "projects": {
-    "C:\\Users\\VIVEK\\Documents\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj": {
+    "C:\\Users\\VIVEK\\Documents\\Rainbowhut2.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\VIVEK\\Documents\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj",
+        "projectUniqueName": "C:\\Users\\VIVEK\\Documents\\Rainbowhut2.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj",
         "projectName": "Rainbowhut1.0",
-        "projectPath": "C:\\Users\\VIVEK\\Documents\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj",
+        "projectPath": "C:\\Users\\VIVEK\\Documents\\Rainbowhut2.0\\Rainbowhut1.0\\Rainbowhut1.0.csproj",
         "packagesPath": "C:\\Users\\VIVEK\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\VIVEK\\Documents\\Rainbowhut1.0\\Rainbowhut1.0\\Rainbowhut1.0\\obj\\",
+        "outputPath": "C:\\Users\\VIVEK\\Documents\\Rainbowhut2.0\\Rainbowhut1.0\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\VIVEK\\AppData\\Roaming\\NuGet\\NuGet.Config",
