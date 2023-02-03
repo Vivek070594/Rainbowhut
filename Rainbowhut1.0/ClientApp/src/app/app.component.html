@@ -6,6 +6,7 @@
         <title>Rainbowhut Studio</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+      
         
     </head>
 <body>
@@ -181,6 +182,7 @@
 						<button id="weddinggallery" (click)="WeddingGallery()">Wedding</button>
 						<button id="modelsgallery" (click)="ModelGallery()">Models</button>
 						<button id="eventgallery" (click)="EventGallery()">Event</button>
+            <button id="giftsgallery" (click)="GiftGallery()">Photo Gifts</button>
             <button id="videogallery" (click)="VideoGallery()">Video</button>
 					</div>
 				</div>
@@ -202,7 +204,7 @@
                         </div>
                         <div class="thumb" *ngIf="galleryitem.galleryType=='Video'">
                           <div class="image">
-                            <video class="galleryvideo" controls controlsList="nodownload" ><source src="{{galleryitem.viewPath}}" type="video/mp4"></video>
+                            <iframe class="galleryvideo" [src]="('https://www.youtube.com/embed/' + galleryitem.viewPath) | safe" frameborder="0" allowfullscreen></iframe>
                           </div>
                       </div>
                       
@@ -351,8 +353,8 @@
                 <th> Action </th>
                 </tr></thead>
                 <tbody>
-                  <tr *ngFor="let slideitem of imageslideshow">
-                    <td>{{slideitem.id}}</td>
+                  <tr *ngFor="let slideitem of imageslideshow; let i = 'index+1'" >
+                    <td>{{i}}</td>
                     <td><img class="tableimage" src="{{slideitem.viewPath}}" /></td>
                     <td> <button  (click)="deleteRowSlideShow(slideitem.id)"><mat-icon class='btn-delete'>delete</mat-icon></button> </td>
                 </tr>
@@ -368,29 +370,53 @@
                     <option value="Wedding">Wedding</option>
                     <option value="Events">Events</option>
                     <option value="Model">Model</option>
-                    <option value="Video">Video</option>
+                    <option value="Gift">Photo Gifts</option>
                     </select><br>
-                    <input type="file" id="profile" accept="image/*,video/mp4"  (change)="galleryImage($event)" class="fileupload" />
+                    <input type="file" id="profile" accept="image/*"  (change)="galleryImage($event)" class="fileupload" />
                     <button (click)="galleryImageUpload()"class="buttonstyle">UPLOAD</button>
               <table class="table table-stripe" >
                 <thead class="thead-dark"><tr>
                     <th>ID</th>
-                    <th>GalleryType</th>
-                <th>Image/Video</th>
+                    <th>Type</th>
+                <th>Image</th>
                 <th> Action </th>
                 </tr></thead>
                 <tbody>
-                  <tr *ngFor="let galleryitem of imagegallery">
-                    <td>{{galleryitem.id}}</td>
+                  <tr *ngFor="let galleryitem of imagegallery; let i = 'index+1'" >
+                    <td>{{i}}</td>
                     <td>{{galleryitem.galleryType}}</td>
-                    <td *ngIf="galleryitem.galleryType!='Video'"><img class="tableimage" src="{{galleryitem.viewPath}}" /></td>
-                    <td *ngIf="galleryitem.galleryType=='Video'"><video class="tableimage" controls><source src="{{galleryitem.viewPath}}" type="video/mp4"></video></td>
+                    <td ><img class="tableimage" src="{{galleryitem.viewPath}}" /></td>
                     <td> <button (click)="deleteRowGallery(galleryitem.id)"><mat-icon class='btn-delete'>delete</mat-icon></button> </td>
                 </tr>
                 </tbody>
                 </table>
             </div>
             </div>
+
+            <div class="row admincard">
+              <div class="col-12">
+                  <h3 style="text-decoration: underline;">GALLERY VIDEO</h3><br>
+                  <input type="text" id="galleryvideoid" name="galleryvideoid" class="urltext"  [(ngModel)]="videourl" />
+                  <button (click)="galleryVideoUpload()"class="buttonstyle">UPLOAD</button>
+            <table class="table table-stripe" >
+              <thead class="thead-dark"><tr>
+                  <th>ID</th>
+              <th>Video</th>
+              <th> Action </th>
+              </tr></thead>
+              <tbody>
+                <tr *ngFor="let galleryitem of imagegalleryvideo; let i = 'index+1'" >
+                  <td>{{i}}</td>
+                  <td> <iframe class="tablevideo" [src]="('https://www.youtube.com/embed/' + galleryitem.viewPath) | safe" frameborder="0" allowfullscreen></iframe></td>
+                  <td> <button (click)="deleteRowGallery(galleryitem.id)"><mat-icon class='btn-delete'>delete</mat-icon></button> </td>
+              </tr>
+              </tbody>
+              </table>
+          </div>
+          </div>
+
+
+
 
             <div class="row admincard">
               <div class="col-12">
@@ -430,6 +456,6 @@
       <p>Copyright &copy; 2018 Your Company . <a href="http://www.templatemo.com/tm-512-moonlight">Moonlight</a> by <a href="http://www.html5max.com" target="_parent">HTML5 Max</a></p>
   </div>
 </div> -->
-
+ 
 </body>
 </html>

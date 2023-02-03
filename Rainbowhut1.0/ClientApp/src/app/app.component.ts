@@ -1,9 +1,10 @@
-import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Pipe, PipeTransform } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { SharedservicesService } from './services/sharedservices.service';
 import { ContactUs, FileModel } from './models/model';
 import { AlertifyService } from './services/alertify-service.service';
 import { interval, take } from 'rxjs';
+import { DomSanitizer, SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
 
 
 
@@ -14,6 +15,8 @@ import { interval, take } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
+
 export class AppComponent implements OnInit {
   contactus: ContactUs={
     name:'',
@@ -24,6 +27,7 @@ export class AppComponent implements OnInit {
   };
 
   enteredotp:string='';
+  videourl:string='';
   loading = false;
   imagezoomgallery=false;
   adminLoginbtn=true;
@@ -36,6 +40,7 @@ export class AppComponent implements OnInit {
   imageprofile:any=[];
   imageslideshow:any=[];
   imagegallery:any=[];
+  imagegalleryvideo:any=[];
   Iimageprofile:any=[];
   Iimageslideshow:any=[];
   Iimagegallery:any=[];
@@ -44,7 +49,7 @@ export class AppComponent implements OnInit {
   otptimer=false;
   qrcode:any=[];
   gallerytypename:string='All';
-  constructor(private sharedservice:SharedservicesService,private alertify:AlertifyService,private elementRef: ElementRef) {
+  constructor(private sharedservice:SharedservicesService,private alertify:AlertifyService,private elementRef: ElementRef,protected _sanitizer: DomSanitizer) {
    
    }
   ngOnInit(): void {
@@ -52,6 +57,8 @@ export class AppComponent implements OnInit {
     
   }
 //Sendmail
+
+
 
 SendMail(){
   this.loading = true;
@@ -80,10 +87,8 @@ GetOtp(){
   this.loading = true;
   this.sharedservice.GetOtp().subscribe(
     response=>{
-      console.log(response);
  if(response.toString()!="Failed")
  {
-  debugger;
    this.sharedservice.SetOtp(response.toString());
         this.startTimer();
         this.adminLoginbtn=false;
@@ -166,7 +171,6 @@ profileImageUpload(){
   let formdata=this.sharedservice.GetFormData();
   this.sharedservice.UploadProfileImage(formdata).subscribe(
     (     response: { toString: () => string; })=>{
-      debugger;
      if(response.toString()=="Success")
      {
        this.loading = false;
@@ -200,14 +204,16 @@ slideshowImageUpload(){
   let formdata=this.sharedservice.GetFormData();
   this.sharedservice.UploadSlideshowImage(formdata).subscribe(
     (     response: { toString: () => string; })=>{
-      debugger;
      if(response.toString()=="Success")
      {
        this.loading = false;
        this.GetSlideShowImage();
      this.alertify.success("Image Uploaded successfully.");
-    
      }
+     else if(response.toString()=="Limit_Exceeded"){
+      this.loading = false;
+      this.alertify.error("Sorry,You can upload less than 15 slideshows.");
+    }
      else{
        this.loading = false;
        this.alertify.error("Sorry,We have some problem in server.Please contact Administrator.");
@@ -221,12 +227,12 @@ selectChangeHandler (event: any) {
 }
 galleryImage(event:any) {
   let file: File = event.target.files[0];
-  if(file.size/1024/1024 <100 )
+  if(file.size/1024/1024 <15 )
   {
     this.sharedservice.SetFileData(file);
   }
   else{
-    this.alertify.error("file is bigger than 100MB")
+    this.alertify.error("file is bigger than 15MB")
   }
     
 }
@@ -238,7 +244,6 @@ galleryImageUpload(){
     formData.append(type, file, file.name);
   this.sharedservice.UploadGalleryImage(formData).subscribe(
     (     response: { toString: () => string; })=>{
-      debugger;
      if(response.toString()=="Success")
      {
        this.loading = false;
@@ -246,6 +251,10 @@ galleryImageUpload(){
      this.alertify.success("Image Uploaded successfully.");
     
      }
+     else if(response.toString()=="Limit_Exceeded"){
+      this.loading = false;
+      this.alertify.error("Sorry,You can upload less than 350 images.");
+    }
      else{
        this.loading = false;
        this.alertify.error("Sorry,We have some problem in server.Please contact Administrator.");
@@ -253,6 +262,32 @@ galleryImageUpload(){
    }
   );
  
+}
+   
+galleryVideoUpload(){
+  let instaurl=this.videourl;
+  const formData = new FormData();
+formData.append("instaurl", instaurl);
+  this.sharedservice.UploadGalleryVideo(formData).subscribe(
+    (     response: { toString: () => string; })=>{
+     if(response.toString()=="Success")
+     {
+       this.loading = false;
+        this.GetGalleryImage();
+     this.alertify.success("Video Link Updated successfully.");
+    
+     }
+     else if(response.toString()=="NonYoutube")
+     {
+      this.loading = false;
+       this.alertify.error("Please enter youtube url only.");
+     }
+     else{
+       this.loading = false;
+       this.alertify.error("Sorry,We have some problem in server.Please contact Administrator.");
+     }
+   }
+  );
 }
 
 QrCodeFile(event:any) {
@@ -274,7 +309,6 @@ QrCodeFileUpload(){
   let formdata=this.sharedservice.GetFormData();
   this.sharedservice.QrCodeFileUpload(formdata).subscribe(
     (     response: { toString: () => string; })=>{
-      debugger;
      if(response.toString()!="Failed")
      {
         this.loading = false;
@@ -297,7 +331,6 @@ GetProfileImage(){
          response=>{
       if(response.toString()!="Failed")
       {
-        debugger;
         this.loading = false;
         this.imageprofile=Object.values(response);
       }
@@ -331,7 +364,8 @@ GetGalleryImage(){
       if(response.toString()!="Failed")
       {
         this.loading = false;
-        this.imagegallery=Object.values(response);
+        this.imagegallery=Object.values(response).filter((x: { galleryType: string; })=>x.galleryType!="Video");
+        this.imagegalleryvideo=Object.values(response).filter((x: { galleryType: string; })=>x.galleryType=="Video");
       }
       else{
         this.loading = false;
@@ -346,7 +380,6 @@ GetAllImage(){
          response=>{
       if(response.toString()!="Failed")
       {
-        debugger;
         this.loading = false;
         this.Iimageprofile=response.profilemodel;
         this.Iimageslideshow=response.slideshowmodel;
@@ -361,33 +394,34 @@ GetAllImage(){
 
 }
 AllGallery(){
-  debugger;
 this.Iimagegallery=this.sharedservice.GetGalleryImagess();
 this.gallerytypename='All';
 }
 WeddingGallery(){
-  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
   this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Wedding");
   this.gallerytypename='Wedding';
 }
 ModelGallery(){
-  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
   this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Model");
   this.gallerytypename='Model';
 }
 EventGallery(){
-  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
   this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Events");
   this.gallerytypename='Events';
 }
+GiftGallery(){
+  let newimage=[];
+  newimage=this.sharedservice.GetGalleryImagess();
+  this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Gift");
+  this.gallerytypename='Gift';
+}
 VideoGallery(){
-  debugger;
   let newimage=[];
   newimage=this.sharedservice.GetGalleryImagess();
   this.Iimagegallery=newimage.filter((x: { galleryType: string; })=>x.galleryType=="Video");
@@ -430,7 +464,6 @@ deleteRowGallery(d:any){
 }
 galleryClick(data:any)
 {
-  debugger;
   this.galleryImage=data;
   this.imagezoomgallery=true;
 }
@@ -573,3 +606,11 @@ function convertDataURIToBinary(dataURI:any) {
   return array;
 }
 
+
+@Pipe({ name: 'safe' })
+export class SafePipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizer) {}
+  transform(url:string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+}

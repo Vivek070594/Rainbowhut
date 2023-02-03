@@ -2,6 +2,7 @@
 using Rainbowhut1._0.Model;
 using Rainbowhut1._0.Persistances.Filters;
 using Rainbowhut1._0.Persistances.Repositories.Common;
+using System;
 using System.Linq.Expressions;
 
 namespace Rainbowhut1._0.Persistances.Repository
@@ -100,6 +101,29 @@ namespace Rainbowhut1._0.Persistances.Repository
             return image;
 
         }
+        public async Task<int> GetSlideshowCount()
+        {
+            int count = await _srepository.CountAsync();
+            return count;
+        }
+        public async Task<int> GetVideoCount()
+        {
+            var expressions = new List<Expression<Func<GalleryModel, bool>>>
+            {
+                x=>"Video" == x.GalleryType,
+            };
+            int count = await _grepository.CountAsync(expressions.ToArray());
+            return count;
+        }
+        public async Task<int> GetGalleryCount()
+        {
+            var expressions = new List<Expression<Func<GalleryModel, bool>>>
+            {
+                x=>"Video" != x.GalleryType,
+            };
+            int count = await _grepository.CountAsync(expressions.ToArray());
+            return count;
+        }
         public async Task<List<GalleryModel>> GetGalleryImage(UploadFilter filter)
         {
             var filters = GetAllUploadGalleryFilter(filter);
@@ -170,5 +194,10 @@ namespace Rainbowhut1._0.Persistances.Repository
         Task<List<GalleryModel>> GetGalleryImage(UploadFilter filter);
         Task<int> GetLatestQrID(UploadFilter filter);
         Task<QrCodeModel> GetQrCodeFiles(int id, Guid guid);
+        Task<int> GetSlideshowCount();
+
+        Task<int> GetVideoCount();
+
+        Task<int> GetGalleryCount();
     }
     }

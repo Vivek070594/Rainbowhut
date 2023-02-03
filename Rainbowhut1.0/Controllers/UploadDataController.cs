@@ -26,10 +26,12 @@ namespace Rainbowhut1._0.Controllers
         [Route("[action]")]
         public async Task<IActionResult> ProfileImageUpdate()
         {
+            int output = 0;
             try
             {
                 IFormFile files = Request.Form.Files[0];
-                int output= await _uploaddataDomain.ProfileImageUpdate(files);
+                output = await _uploaddataDomain.ProfileImageUpdate(files);
+
                 if (output == 1)
                 {
                     return new JsonResult("Success");
@@ -38,7 +40,7 @@ namespace Rainbowhut1._0.Controllers
                 {
                     return new JsonResult("Failed");
                 }
-               // return Ok();
+                // return Ok();
             }
             catch (Exception ex)
             {
@@ -50,19 +52,58 @@ namespace Rainbowhut1._0.Controllers
         [Route("[action]")]
         public async Task<IActionResult> GalleryImageAdd()
         {
+            int output = 0;
             try
             {
                 IFormFile files = Request.Form.Files[0];
-                int output = await _uploaddataDomain.GalleryImageAdd(files);
+                int gallerycount = await _uploaddataDomain.GetGalleryCount();
+                if (gallerycount < 350)
+                {
+                    output = await _uploaddataDomain.GalleryImageAdd(files);
+                }
+                else
+                {
+                    output = -6000;
+                }
                 if (output == 1)
                 {
                     return new JsonResult("Success");
+                }
+                else if (output == -6000)
+                {
+                    return new JsonResult("Limit_Exceeded");
                 }
                 else
                 {
                     return new JsonResult("Failed");
                 }
-                //return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> GalleryVideoAdd([FromForm] string instaurl)
+        {
+            int output = 0;
+            try
+            {
+                output = await _uploaddataDomain.GalleryVideoAdd(instaurl);
+                if (output == 1)
+                {
+                    return new JsonResult("Success");
+                }
+                else if(output==-6000)
+                {
+                    return new JsonResult("NonYoutube");
+                }
+                else
+                {
+                    return new JsonResult("Failed");
+                }
             }
             catch (Exception ex)
             {
@@ -74,13 +115,26 @@ namespace Rainbowhut1._0.Controllers
         [Route("[action]")]
         public async Task<IActionResult> SlideImageAdd()
         {
+            int output = 0;
             try
             {
-                IFormFile files = Request.Form.Files[0];
-                int output = await _uploaddataDomain.SlideImageAdd(files);
+                int slideshowcount = await _uploaddataDomain.GetSlideshowCount();
+                if (slideshowcount < 15)
+                {
+                    IFormFile files = Request.Form.Files[0];
+                    output = await _uploaddataDomain.SlideImageAdd(files);
+                }
+                else
+                {
+                    output = -6000;
+                }
                 if (output == 1)
                 {
                     return new JsonResult("Success");
+                }
+                else if (output == -6000)
+                {
+                    return new JsonResult("Limit_Exceeded");
                 }
                 else
                 {
@@ -101,7 +155,7 @@ namespace Rainbowhut1._0.Controllers
             try
             {
                 IFormFile files = Request.Form.Files[0];
-                QrCodeViewModel qrview=await _uploaddataDomain.QrCodeFileAdd(files);
+                QrCodeViewModel qrview = await _uploaddataDomain.QrCodeFileAdd(files);
                 if (qrview != null)
                 {
                     return new JsonResult(qrview);

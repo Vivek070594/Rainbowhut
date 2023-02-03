@@ -1104,6 +1104,10 @@ height: 300px;
         width: 20% !important;
         height: 20% !important;
        }
+       .tablevideo{
+        width: 70% !important;
+        height: 20% !important;
+       }
        .txtotp {
         font-size: 17px !important;
       }
@@ -1212,6 +1216,10 @@ height: 300px;
       box-sizing: border-box;
  }
  .tableimage{
+  width: 10%;
+  height: 10%;
+ }
+ .tablevideo{
   width: 10%;
   height: 10%;
  }
@@ -1483,6 +1491,11 @@ height: 300px;
   100% {
     background-position: 250px 0, 250px 0, 100px 0;
   }
+}
+.urltext{
+  width: 200px;
+  height: 40px;
+  margin-right: 5px;
 }
 
   

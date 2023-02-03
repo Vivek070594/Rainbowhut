@@ -32,7 +32,7 @@ namespace Rainbowhut1._0.Domain
         {
             int result = 0;
             ProfileModel fileModel = new ProfileModel();
-           
+
             try
             {
                 if (files.Length > 0)
@@ -43,7 +43,7 @@ namespace Rainbowhut1._0.Domain
                     {
                         file.Delete();
                     }
-                    string Name = Guid.NewGuid().ToString() +"-"+ files.FileName;
+                    string Name = Guid.NewGuid().ToString() + "-" + files.FileName;
                     string fullpath = folderPath + Name;
                     using (var stream = new FileStream(fullpath, FileMode.Create))
                     {
@@ -59,7 +59,7 @@ namespace Rainbowhut1._0.Domain
                 throw ex;
             }
             return result;
-           
+
         }
         public async Task<int> GalleryImageAdd(IFormFile files)
         {
@@ -81,6 +81,53 @@ namespace Rainbowhut1._0.Domain
                 }
                 galleryModel.GalleryType = files.Name;
                 result = await _uploadRepository.GalleryImageAdd(galleryModel);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+        public async Task<int> GalleryVideoAdd(string instaurl)
+        {
+            int result = 0;
+            GalleryModel galleryModel = new GalleryModel();
+            try
+            {
+                string url = string.Empty;
+                if (instaurl != null)
+                {
+                    if (instaurl.Contains("youtube.com"))
+                    {
+                        if (instaurl.Contains("watch"))
+                        {
+                            string codeurl = instaurl.Split("watch?v=")[1];
+                            if(codeurl.Contains("&"))
+                            {
+                                codeurl=codeurl.Split("&")[0];
+                            }
+                            url =   codeurl + "?autoplay=1&amp;controls=1&amp;showinfo=0&amp;rel=0&amp;loop=0&amp;modestbranding=1&amp;wmode=transparent&amp;mute=1";
+                        }
+                        else if (instaurl.Contains("shorts"))
+                        {
+                            string codeurl = instaurl.Split("shorts/")[1];
+                            if (codeurl.Contains("&"))
+                            {
+                                codeurl = codeurl.Split("&")[0];
+                            }
+                            url =  codeurl + "?autoplay=1&amp;controls=1&amp;showinfo=0&amp;rel=0&amp;loop=0&amp;modestbranding=1&amp;wmode=transparent&amp;mute=1";
+                        }
+
+                        galleryModel.Path = url;
+                        galleryModel.ViewPath = url;
+                        galleryModel.GalleryType = "Video";
+                        result = await _uploadRepository.GalleryImageAdd(galleryModel);
+                    }
+                    else
+                    {
+                        result = -6000;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -202,10 +249,17 @@ namespace Rainbowhut1._0.Domain
             try
             {
                 var Data = await _uploadRepository.GetGalleryByIdAsync(id);
-                FileInfo file = new FileInfo(Data.Path);
-                if (file.Exists) 
+                if (Data.GalleryType != "Video")
                 {
-                    file.Delete();
+                    FileInfo file = new FileInfo(Data.Path);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                        result = await _uploadRepository.DeleteGalleryAsync(Data);
+                    }
+                }
+                else
+                {
                     result = await _uploadRepository.DeleteGalleryAsync(Data);
                 }
             }
@@ -227,7 +281,7 @@ namespace Rainbowhut1._0.Domain
                     file.Delete();
                     result = await _uploadRepository.DeleteSlideshowAsync(Data);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -300,10 +354,49 @@ namespace Rainbowhut1._0.Domain
                 result.profilemodel = await _uploadRepository.GetProfileImage(null);
                 result.slideshowmodel = await _uploadRepository.GetSlideShowImage(null);
                 result.gallerymodel = await _uploadRepository.GetGalleryImage(null);
-                if(result.profilemodel == null && result.slideshowmodel.Count==0 && result.gallerymodel.Count==0)
+                if (result.profilemodel == null && result.slideshowmodel.Count == 0 && result.gallerymodel.Count == 0)
                 {
                     result = null;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+        public async Task<int> GetSlideshowCount()
+        {
+            int result = 0;
+            try
+            {
+                result = await _uploadRepository.GetSlideshowCount();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+        public async Task<int> GetVideoCount()
+        {
+            int result = 0;
+            try
+            {
+                result = await _uploadRepository.GetVideoCount();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+        public async Task<int> GetGalleryCount()
+        {
+            int result = 0;
+            try
+            {
+                result = await _uploadRepository.GetGalleryCount();
             }
             catch (Exception ex)
             {

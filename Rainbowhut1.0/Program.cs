@@ -18,7 +18,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(o => o.AddPolicy("RainbowhutPolicy", builder =>
 {
-    builder.WithOrigins("http://localhost:4200")
+    builder.WithOrigins("http://rainbowhut.in/").WithOrigins("http://dev_rainbowhut.in/")
+   // builder.WithOrigins("http://localhost:4200/")
            .AllowAnyOrigin()
            .AllowAnyMethod()
            .AllowAnyHeader();

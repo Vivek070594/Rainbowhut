@@ -14,6 +14,7 @@ export class SharedservicesService {
   datafile!: File;
   otp:string='';
   storeimagegallery:any=[];
+  storevideogallery:any=[];
 
   constructor(private http:HttpClient) { }
   //Send mail
@@ -55,8 +56,14 @@ this.otp=otpdata;
   SetGalleryImage(data:any){
 this.storeimagegallery=data;
   }
+  SetGalleryvideo(data:any){
+    this.storevideogallery=data;
+      }
   GetGalleryImagess(){
     return this.storeimagegallery;
+  }
+  GetGalleryvideos(){
+    return this.storevideogallery;
   }
   UploadProfileImage(formData:FormData){
     return this.http.post(this.apiurl+'UploadData/ProfileImageUpdate',formData,{reportProgress: true} )
@@ -66,6 +73,9 @@ this.storeimagegallery=data;
   }
   UploadGalleryImage(formData:FormData){
     return this.http.post(this.apiurl+'UploadData/GalleryImageAdd',formData ,{reportProgress: true} )
+  }
+  UploadGalleryVideo(formData:FormData){
+    return this.http.post(this.apiurl+'UploadData/GalleryVideoAdd',formData ,{reportProgress: true} )
   }
   GetProfileImage(){
     return this.http.get(this.apiurl+'UploadData/GetProfileImage' )

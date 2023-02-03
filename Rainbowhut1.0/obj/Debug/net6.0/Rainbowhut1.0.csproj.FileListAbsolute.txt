@@ -94,13 +94,13 @@ C:\Users\VIVEK\Documents\Rainbowhut1.0\Rainbowhut1.0\Rainbowhut1.0\obj\Debug\net
 C:\Users\VIVEK\Documents\Rainbowhut1.0\Rainbowhut1.0\Rainbowhut1.0\obj\Debug\net6.0\Rainbowhut1.0.genruntimeconfig.cache
 C:\Users\VIVEK\Documents\Rainbowhut1.0\Rainbowhut1.0\Rainbowhut1.0\obj\Debug\net6.0\ref\Rainbowhut1.0.dll
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\appsettings.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\ClientApp\angular.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\ClientApp\package-lock.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\ClientApp\package.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\ClientApp\tsconfig.app.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\ClientApp\tsconfig.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\ClientApp\tsconfig.spec.json
-C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\appsettings.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\Rainbowhut1.0.exe
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\Rainbowhut1.0.deps.json
 C:\Users\VIVEK\Documents\Rainbowhut2.0\Rainbowhut1.0\bin\Debug\net6.0\Rainbowhut1.0.runtimeconfig.json
